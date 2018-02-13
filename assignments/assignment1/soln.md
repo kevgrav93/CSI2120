@@ -1,0 +1,25 @@
+1a) ?- findall(A,(person(A,B),employee(A,C),company(C,D),not(B=D)),A).
+1b) ?- findall(A,(company(A,B),city(B,ontario)),A).
+1c) ?- findall(A,(person(A,_),not(employee(A,_))),A).
+1d) ?- findall(A,(employee(A,B),company(B,ottawa),A).
+1e) We can note that Marie works for both Shopify and RossVideo. And we can further see that both these companies work in Ottawa. Therefore the query goal `employee(A,B),company(B,ottawa)` will grab Marie twice since `A=Marie,B=Shopify` and `A=Marie,B=RossVideo` will satisfy the goal. So `findall` will put in marie twice. So instead of using `findall` we can simply replace it with `setof` in 1d. This will cause the query to obtain the set of the output list. A set being a list without
+duplicates. So `setof(A,(employee(A,B),company(B,ottawa),A).` will return the exact same list as in 1d but there would be no duplicates. 
+
+3)
+
+```
+degToRad(A,B):-
+    B is pi*(A/180).
+
+distance(Lat1,Lon1,Lat2,Lon2):-
+    degToRad(Lat1,LatR1),
+    degToRad(Lon1,LonR1),
+    degToRad(Lat2,LatR2),
+    degToRad(Lon2,LonR2),
+    A is (sin((LatR1-LatR2)/2))^2,
+    B is cos(LatR1)*cos(LatR2)*(sin((LonR1-LonR2)/2))^2,
+    C is 2*asin(sqrt(A+B)),
+    D is 6371.0*C.
+```
+
+
