@@ -1,0 +1,108 @@
+`busy(x)`;
+branch(q1) [x=x] {
+  `employee(X,C1)`,
+  `employee(X,C2)`,
+  `compare(<,C1,C2)`;
+  branch(annie) [X=annie,C1=dium] {
+    `employee(annie, C2)`,
+    `compare(<,dium,C2)`;
+    branch(annie_dium) [C2=dium] {
+      `compare(<,dium,dium)`;
+      branch(annie_bad) [] {
+        `false`  
+      }
+    }
+  }
+  branch(marie) [X=marie,C1=shopify] {
+    `employee(marie,C2)`,
+    `compare(<,shopify,C2)`;
+    branch(marie_shopify) [C2=shopify] {
+      `compare(<,shopify,shopify)`;
+      branch(marie_bad)[] {
+        `false`
+      }
+    }
+    branch(marie_shopify_rossvideo) [C2=rossvideo] {
+      `compare(<,shopify,rossvideo)`;
+      branch(marie_bad) [] {
+        `false`;
+      }
+    }
+  }
+  branch(simon) [X=simon,C1=google] {
+    `employee(simon,C2)`,
+    `compare(<,google,C2)`;
+    branch(simon_google) [C2=google] {
+      `compare(<,google,google)`;
+      branch(simon_bad)[] {
+        `false`;
+      }
+    }
+    branch(simon_google_uber) [C2=uber] {
+      `compare(<,google,uber)`;
+      branch(simon_good)[] {
+        `simon`;
+      }
+    }
+  }
+  branch(marie_2) [X=marie,C1=rossvideo] {
+    `employee(marie,C2)`,
+    `compare(<,rossvideo,C2)`;
+    branch(marie_rossvideo) [C2=shopify] {
+      `compare(<,rossvideo,shopify)`;
+      branch(marie_good) [] {
+        `marie`;
+      }
+    }
+    branch(marie_rossvideo_rossvideo) [C2 = rossvideo] {
+        `compare(<,rossvideo,rossvideo)`;
+        branch(marie_bad) [] {
+          `false;`
+        }
+    }
+  }
+  branch(simon_2) [X=simon,C1=uber] {
+    `employee(simon,C2)`,
+    `compare(<,uber,C2)`;
+    branch(simon_google) [C2=google]{
+      `compare(<,uber,google)`;
+      branch(simon_bad)[] {
+        `false`;
+      }
+    }
+    branch(simon_uber) [C2=uber] {
+      `compare(<,uber,uber)`;
+      branch(simon_bad)[] {
+        `false`;
+      }
+    }
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+}

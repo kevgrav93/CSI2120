@@ -43,5 +43,8 @@ busy(X) :- employee(X,C1),
     compare(<, C1, C2).
 
 busy(X):- employee(X,C),
-    write('query 2'),
+    write(X),
+    write(' '),
+    write(C),
+    write(' '),
     company(C, toronto).
