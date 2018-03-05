@@ -1,0 +1,2 @@
+#lang racket
+(define (divideIt x) (if (= x 0) +inf.0 (/ (+ (* 5 x) (* 3 (* x x)) 2) x))) 
