@@ -1,6 +1,12 @@
 import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * @author Francisco Trindade
+ * March 8 2018
+ * CSI2120 - Assignment 4
+ */
+
 public class TreeNode<T> {
     public T data;
     public TreeNode<T> parent;

@@ -13,6 +13,12 @@ import java.io.BufferedWriter;
 import java.io.OutputStreamWriter;
 import java.io.FileOutputStream;
 
+/**
+ * @author Francisco Trindade
+ * March 8 2018
+ * CSI2120 - Assignment 4
+ */
+
 public class Q1 implements Runnable {
     private List<Pool> pools;
     private TreeNode<Pool> tree;

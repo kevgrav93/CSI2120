@@ -1,3 +1,9 @@
+/**
+ * @author Francisco Trindade
+ * March 8 2018
+ * CSI2120 - Assignment 4
+ */
+
 public class Pool {
     public double lat, lon, latRad, lonRad;
     public String name;
