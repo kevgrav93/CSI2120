@@ -36,6 +36,9 @@ public class Q1 implements Runnable {
     public void run() {
         generateList();
         organizeList();
+        this.pools.forEach((pool) -> {
+            System.out.println(pool.name);
+        });
         generateTree();
         traverseTree(this.pools.get(0).treeNode);
         outputPath();

@@ -60,5 +60,109 @@ pool("McNabb",-75.70274498043973,45.40897618041744).
 pool("Alexander",-75.73163858599659,45.380330193754176).
 pool("Champlain",-75.74496450985441,45.40431589991452).
 pool("Ev Tremblay",-75.71148292845268,45.39934611083154).
-poolList(X) :-
-    X = ["Crestview","Bellevue Manor","Dutchie's Hole","Bingham","Alvin Heights","Balena","Bel Air","Raven","Britannia","Chaudiere","Parkdale","Alta Vista","Cecil Morrison","Heron","Brantwood","Lisa","McKellar","Overbrook","Owl","Pushman","Sandy Hill","Westboro","Windsor","Frank Ryan","Strathcona","Greenboro","Sylvia Holden","Kiwanis","Entrance","General Burns","Corkstown","Pauline Vanier","St. Luke's","Canterbury","Alda Burt","Hawthorne","Weston","Michèle","Parkway","Ruth Wildgen","Agincourt","Elizabeth Manley","Jules Morin","Kingsmere","Carleton Heights","Rideauview","Frank Licari","Optimiste","Glen Cairn","Bearbrook","Iona","Meadowvale","Reid","Hampton","St-Laurent","St. Paul's","Woodroffe","Lions","McNabb","Alexander","Champlain","Ev Tremblay"].
+poolList(["Crestview","Bellevue Manor","Dutchie's Hole","Bingham","Alvin Heights","Balena","Bel Air","Raven","Britannia","Chaudiere","Parkdale","Alta Vista","Cecil Morrison","Heron","Brantwood","Lisa","McKellar","Overbrook","Owl","Pushman","Sandy Hill","Westboro","Windsor","Frank Ryan","Strathcona","Greenboro","Sylvia Holden","Kiwanis","Entrance","General Burns","Corkstown","Pauline Vanier","St. Luke's","Canterbury","Alda Burt","Hawthorne","Weston","Michèle","Parkway","Ruth Wildgen","Agincourt","Elizabeth Manley","Jules Morin","Kingsmere","Carleton Heights","Rideauview","Frank Licari","Optimiste","Glen Cairn","Bearbrook","Iona","Meadowvale","Reid","Hampton","St-Laurent","St. Paul's","Woodroffe","Lions","McNabb","Alexander","Champlain","Ev Tremblay"]).
+
+saveRoute(Routes,File) :-
+    open(File,write,Stream),
+    writeList(Routes,Stream),
+    close(Stream).
+
+getListHead([H|_],H).
+
+findRoute(X) :-
+    retractall(tree(_,_)),
+    sortPoolsWestEast(SortedPools),
+    findChildren(SortedPools,SortedPools),
+    getListHead(SortedPools,Head),
+    traverseInit(Head,TreeOrder),
+    runRoute(TreeOrder,PathList),
+    X = PathList.
+
+% Go through the route
+runRoute([H|T],X) :-
+    runRoute(T,H,0,X1),
+    append([(H,0.0)],X1,X2),
+    X = X2.
+runRoute([],_,_,[]).
+runRoute([H|T],PrevPool,CurrDist,X) :-
+    poolDistance(PrevPool,H,Dist),
+    CurrDist2 is CurrDist+Dist,
+    runRoute(T,H,CurrDist2,X1),
+    append([(H,CurrDist2)],X1,X2),
+    X = X2.
+
+writeList([],_).
+writeList([H|T],Stream) :-
+    write(Stream,H),nl(Stream),
+    writeList(T,Stream).
+
+% Go through the tree and generate the traversal list
+traverseInit(Parent,X):-
+    tree(Parent,Children),
+    traverse(Children,X1),
+    append([Parent],X1,X2),
+    X = X2.
+traverse([],[]).
+traverse([H|T],X) :-
+    tree(H,Children),
+    traverse(Children,X1),
+    append([H],X1,X2),
+    traverse(T,X3),
+    append(X2,X3,X4),
+    X = X4.
+
+
+% Find all the children nodes
+findChildren(_,[]).
+findChildren(SortedPools,[H|T]) :-
+    findChildren(SortedPools,SortedPools,H,X),
+    write(X),nl,
+    assertz(tree(H,X)),
+    findChildren(SortedPools,T).
+findChildren(_,[],_,[]).
+findChildren(SortedPools,[H|T],Parent,X) :-
+    findChildren(SortedPools,T,Parent,X1),
+    findMinimum(SortedPools,H,X2),
+    (=(X2,Parent) -> append([H],X1,X3)
+    ;    append([],X1,X3)),
+    X = X3.
+
+% Find Minimum
+findMinimum([H|_],H,nil).
+
+findMinimum([H|T],Dest,X) :-
+    findMinimum(T,Dest,H1),
+    poolDistance(H,Dest,Dist),
+    poolDistance(H1,Dest,Dist1),
+    (Dist =< Dist1 -> X = H
+    ;   X = H1).
+    
+% Distance Calculation
+poolDistance(nil,_,1000).
+
+poolDistance(P1,P2,Dist) :-
+    pool(P1,Lat1,Lon1),
+    pool(P2,Lat2,Lon2),
+    LatRad1 is (Lat1*pi)/180,
+    LonRad1 is (Lon1*pi)/180,
+    LatRad2 is (Lat2*pi)/180,
+    LonRad2 is (Lon2*pi)/180,
+    LatPart is sin((LatRad1-LatRad2)/2) ** 2,
+    LonPart is sin((LonRad1-LonRad2)/2) ** 2,
+    InnerPart is LatPart + (cos(LatRad1)*cos(LatRad2)*LonPart),
+    DRad is 2*asin(sqrt(InnerPart)),
+    Dist is DRad * 6371.0.
+    
+
+% Sorts shit
+sortPoolsWestEast(X) :-
+    poolList(List),
+    predsort(my_comp, List, X).
+
+my_comp(Comp, W1, W2) :-
+    pool(W1,Lat1,_),
+    pool(W2,Lat2,_),
+    (   Lat1 < Lat2 -> Comp = '<'
+    ;   Lat1 > Lat2 -> Comp = '>'
+    ;   Lat1 =:= Lat2 -> Comp = '='
+    ;   compare(Comp,W1,W2)).

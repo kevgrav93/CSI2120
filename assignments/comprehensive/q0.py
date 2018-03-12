@@ -24,12 +24,12 @@ with open('./java/pools-java.txt', 'w') as outfile:
 # Prolog Output
 with open('./prolog/pools-prolog.pl', 'w') as outfile:
     pool_list = '['
-    outfile.write('; Author: Francisco Trindade - 7791605\n')
-    outfile.write('; ------ AUTO GENERATED ITEMS FROM PYTHON ------\n')
+    outfile.write('% Author: Francisco Trindade - 7791605\n')
+    outfile.write('% ------ AUTO GENERATED ITEMS FROM PYTHON ------\n')
     for pool in pools:
         outfile.write('pool("'+pool["name"]+'",'+str(pool["lat"])+','+str(pool["lon"])+').\n')
         pool_list += ('"'+pool["name"]+'",')
     outfile.write('poolList(X) :-\n    X = '+pool_list[:-1]+'].\n')
-    outfile.write('; ------ END OF AUTO GENERATED ITEMS ------\n')
-    outfile.write('; ------ QUERIES MERGED FROM "queries.pl" ------')
+    outfile.write('% ------ END OF AUTO GENERATED ITEMS ------\n')
+    outfile.write('% ------ QUERIES MERGED FROM "queries.pl" ------')
     # TODO Write a function to merge the files together
