@@ -1,3 +1,5 @@
+% Author: Francisco Trindade - 7791605
+% ------ AUTO GENERATED ITEMS FROM PYTHON ------
 pool("Crestview",-75.73795670904249,45.344387632924054).
 pool("Bellevue Manor",-75.73886856878032,45.37223315413918).
 pool("Dutchie's Hole",-75.66809864107668,45.420784695340274).
@@ -60,15 +62,20 @@ pool("McNabb",-75.70274498043973,45.40897618041744).
 pool("Alexander",-75.73163858599659,45.380330193754176).
 pool("Champlain",-75.74496450985441,45.40431589991452).
 pool("Ev Tremblay",-75.71148292845268,45.39934611083154).
-poolList(["Crestview","Bellevue Manor","Dutchie's Hole","Bingham","Alvin Heights","Balena","Bel Air","Raven","Britannia","Chaudiere","Parkdale","Alta Vista","Cecil Morrison","Heron","Brantwood","Lisa","McKellar","Overbrook","Owl","Pushman","Sandy Hill","Westboro","Windsor","Frank Ryan","Strathcona","Greenboro","Sylvia Holden","Kiwanis","Entrance","General Burns","Corkstown","Pauline Vanier","St. Luke's","Canterbury","Alda Burt","Hawthorne","Weston","Michèle","Parkway","Ruth Wildgen","Agincourt","Elizabeth Manley","Jules Morin","Kingsmere","Carleton Heights","Rideauview","Frank Licari","Optimiste","Glen Cairn","Bearbrook","Iona","Meadowvale","Reid","Hampton","St-Laurent","St. Paul's","Woodroffe","Lions","McNabb","Alexander","Champlain","Ev Tremblay"]).
-
+poolList(X) :-
+    X = ["Crestview","Bellevue Manor","Dutchie's Hole","Bingham","Alvin Heights","Balena","Bel Air","Raven","Britannia","Chaudiere","Parkdale","Alta Vista","Cecil Morrison","Heron","Brantwood","Lisa","McKellar","Overbrook","Owl","Pushman","Sandy Hill","Westboro","Windsor","Frank Ryan","Strathcona","Greenboro","Sylvia Holden","Kiwanis","Entrance","General Burns","Corkstown","Pauline Vanier","St. Luke's","Canterbury","Alda Burt","Hawthorne","Weston","Michèle","Parkway","Ruth Wildgen","Agincourt","Elizabeth Manley","Jules Morin","Kingsmere","Carleton Heights","Rideauview","Frank Licari","Optimiste","Glen Cairn","Bearbrook","Iona","Meadowvale","Reid","Hampton","St-Laurent","St. Paul's","Woodroffe","Lions","McNabb","Alexander","Champlain","Ev Tremblay"].
+% ------ END OF AUTO GENERATED ITEMS ------
+% ------ QUERIES MERGED FROM "prolog-solution.pl" ------
+% Query to save the output into a file
 saveRoute(Routes,File) :-
     open(File,write,Stream),
     writeList(Routes,Stream),
     close(Stream).
 
+% Returns the head of a list
 getListHead([H|_],H).
 
+% The main method to return the list of the path
 findRoute(X) :-
     retractall(tree(_,_)),
     sortPoolsWestEast(SortedPools),
@@ -78,7 +85,7 @@ findRoute(X) :-
     runRoute(TreeOrder,PathList),
     X = PathList.
 
-% Go through the route
+% Goes through the list and adds the distance between each step of the way
 runRoute([H|T],X) :-
     runRoute(T,H,0,X1),
     append([(H,0.0)],X1,X2),
@@ -91,6 +98,7 @@ runRoute([H|T],PrevPool,CurrDist,X) :-
     append([(H,CurrDist2)],X1,X2),
     X = X2.
 
+% Writes the list to a file Stream
 writeList([],_).
 writeList([H|T],Stream) :-
     write(Stream,H),nl(Stream),
@@ -111,12 +119,10 @@ traverse([H|T],X) :-
     append(X2,X3,X4),
     X = X4.
 
-
-% Find all the children nodes
+% Generates the tree
 findChildren(_,[]).
 findChildren(SortedPools,[H|T]) :-
     findChildren(SortedPools,SortedPools,H,X),
-    write(X),nl,
     assertz(tree(H,X)),
     findChildren(SortedPools,T).
 findChildren(_,[],_,[]).
@@ -127,9 +133,8 @@ findChildren(SortedPools,[H|T],Parent,X) :-
     ;    append([],X1,X3)),
     X = X3.
 
-% Find Minimum
+% Checks to see which pool is the closest pool to H
 findMinimum([H|_],H,nil).
-
 findMinimum([H|T],Dest,X) :-
     findMinimum(T,Dest,H1),
     poolDistance(H,Dest,Dist),
@@ -137,9 +142,8 @@ findMinimum([H|T],Dest,X) :-
     (Dist =< Dist1 -> X = H
     ;   X = H1).
     
-% Distance Calculation
+% Distance Calculation between two inputted pools
 poolDistance(nil,_,1000).
-
 poolDistance(P1,P2,Dist) :-
     pool(P1,Lat1,Lon1),
     pool(P2,Lat2,Lon2),
@@ -154,11 +158,12 @@ poolDistance(P1,P2,Dist) :-
     Dist is DRad * 6371.0.
     
 
-% Sorts shit
+% Sorts the pools from West, East
 sortPoolsWestEast(X) :-
     poolList(List),
     predsort(my_comp, List, X).
 
+% Custom comparator to help sort the pools
 my_comp(Comp, W1, W2) :-
     pool(W1,Lat1,_),
     pool(W2,Lat2,_),

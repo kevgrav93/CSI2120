@@ -22,7 +22,7 @@ with open('./java/pools-java.txt', 'w') as outfile:
         outfile.write(str(pool["lon"])+'\n')
 
 # Prolog Output
-with open('./prolog/pools-prolog.pl', 'w') as outfile:
+with open('./prolog/findroute.pl', 'w') as outfile:
     pool_list = '['
     outfile.write('% Author: Francisco Trindade - 7791605\n')
     outfile.write('% ------ AUTO GENERATED ITEMS FROM PYTHON ------\n')
@@ -31,5 +31,7 @@ with open('./prolog/pools-prolog.pl', 'w') as outfile:
         pool_list += ('"'+pool["name"]+'",')
     outfile.write('poolList(X) :-\n    X = '+pool_list[:-1]+'].\n')
     outfile.write('% ------ END OF AUTO GENERATED ITEMS ------\n')
-    outfile.write('% ------ QUERIES MERGED FROM "queries.pl" ------')
+    outfile.write('% ------ QUERIES MERGED FROM "prolog-solution.pl" ------\n')
     # TODO Write a function to merge the files together
+    solution_file = open('./prolog/prolog-solution.pl','r')
+    outfile.write(solution_file.read())

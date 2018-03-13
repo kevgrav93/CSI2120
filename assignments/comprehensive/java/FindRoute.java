@@ -19,14 +19,14 @@ import java.io.FileOutputStream;
  * CSI2120 - Assignment 4
  */
 
-public class Q1 implements Runnable {
+public class FindRoute implements Runnable {
     private List<Pool> pools;
     private TreeNode<Pool> tree;
     private File inFile;
     private List<Pool> poolOrder;
 
     // Constructor
-    public Q1(File inFile) {
+    public FindRoute(File inFile) {
         this.inFile = inFile;
         this.pools = new ArrayList<Pool>();
         this.poolOrder = new ArrayList<Pool>();
@@ -36,13 +36,9 @@ public class Q1 implements Runnable {
     public void run() {
         generateList();
         organizeList();
-        this.pools.forEach((pool) -> {
-            System.out.println(pool.name);
-        });
         generateTree();
         traverseTree(this.pools.get(0).treeNode);
         outputPath();
-        this.tree.toString(0);
     }
 
     /**
@@ -159,9 +155,9 @@ public class Q1 implements Runnable {
                 throw new FileNotFoundException();
             }
 
-            new Thread(new Q1(file)).start();
+            new Thread(new FindRoute(file)).start();
         } catch (IllegalArgumentException e) {
-            System.out.println("Missing input parameter try 'java Q1 pools-java.txt'");
+            System.out.println("Missing input parameter try 'java FindRoute pools-java.txt'");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
