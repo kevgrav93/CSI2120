@@ -2,9 +2,11 @@
 ; CSI2120 Assignment 2 - Assignment 1
 ; Francisco Trindade - 7791605
 
+; Helper functino to turn degress into radians
 (define (degtorad deg)
   (* pi (/ deg 180)))
 
+; Helper function to help with the calculation and make it less messy
 (define (innerpart x1 x2)
   (expt (sin (/ (- x1 x2) 2)) 2))
 

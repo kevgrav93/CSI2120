@@ -1,4 +1,7 @@
 #lang racket
+; Asignment 2 - Question 3
+; Francisco Trindade - 7791605
+
 (define (duplicatePair list)
   (let dup ([acc '()]
             [curr (car list)]
@@ -28,6 +31,7 @@
        [else (dup (cons curr acc) (car rest) (cdr rest))]))
    (lambda (x y) (> (car (cdr x)) (car (cdr y))))))
 
+; Helper function that finds the nubmer of an element 'el' in the list 'list'
 (define (numDuplicates el list)
   (cond
     [(null? list) 0]
