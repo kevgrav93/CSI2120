@@ -16,10 +16,8 @@
   (let traverse ([t t])
       (cond
         [(null? t) '()]
-        [(not (list? (car t))) (cons (car t) (traverse (cdr t)))]
-        [else (append (traverse (car t)) (traverse (cdr t)))])))
+        [(list? (car t)) (cons (car (car t)) (traverse (cdr t)))])))
     
-
 ; Tree given in question
  (define atree '(10
  (2 (4 (9 (3))
@@ -28,5 +26,3 @@
  (5 (7)
  (21))
  (6)))
-    
-  
