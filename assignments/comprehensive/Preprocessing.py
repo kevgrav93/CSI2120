@@ -32,6 +32,12 @@ with open('./prolog/findroute.pl', 'w') as outfile:
     outfile.write('poolList(X) :-\n    X = '+pool_list[:-1]+'].\n')
     outfile.write('% ------ END OF AUTO GENERATED ITEMS ------\n')
     outfile.write('% ------ QUERIES MERGED FROM "prolog-solution.pl" ------\n')
-    # TODO Write a function to merge the files together
     solution_file = open('./prolog/prolog-solution.pl','r')
     outfile.write(solution_file.read())
+
+# Scheme Output
+with open('./scheme/pools-scheme.txt', 'w') as outfile:
+    for pool in pools:
+        outfile.write(pool["name"]+',')
+        outfile.write(str(pool["lat"])+',')
+        outfile.write(str(pool["lon"])+'\n')

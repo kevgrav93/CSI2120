@@ -77,11 +77,16 @@ getListHead([H|_],H).
 
 % The main method to return the list of the path
 findRoute(X) :-
+    write("Clean Up..."),nl,
     retractall(tree(_,_)),
+    write("Sorting Pools West to East..."),nl,
     sortPoolsWestEast(SortedPools),
+    write("Developing the Tree, this part takes a while let it run..."),nl,
     findChildren(SortedPools,SortedPools),
     getListHead(SortedPools,Head),
+    write("Traversing the tree..."),nl,
     traverseInit(Head,TreeOrder),
+    write("Developing the path..."),nl,
     runRoute(TreeOrder,PathList),
     X = PathList.
 
