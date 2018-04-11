@@ -41,3 +41,10 @@ with open('./scheme/pools-scheme.txt', 'w') as outfile:
         outfile.write(pool["name"]+',')
         outfile.write(str(pool["lat"])+',')
         outfile.write(str(pool["lon"])+'\n')
+
+# Go Output
+with open('./go/pools-go.txt', 'w') as outfile:
+    for pool in pools:
+        outfile.write(pool["name"]+',')
+        outfile.write(str(pool["lat"])+',')
+        outfile.write(str(pool["lon"])+'\n')
